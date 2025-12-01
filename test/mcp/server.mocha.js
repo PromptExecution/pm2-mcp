@@ -185,4 +185,69 @@ describe('PM2 MCP server', function () {
 
     await callToolWithTimeout('pm2_delete_process', { process: name });
   });
+
+  it('pm2_restart_process restarts a running process', async () => {
+    const name = 'mcp-restart-test';
+    await startEcho(name);
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    const restartRes = await callToolWithTimeout('pm2_restart_process', { process: name });
+    should(restartRes.isError).not.equal(true);
+    should(restartRes.structuredContent.action).eql('restart');
+    should(restartRes.structuredContent.process).eql(name);
+    should(restartRes.structuredContent.processes).be.an.Array();
+
+    await callToolWithTimeout('pm2_delete_process', { process: name });
+  });
+
+  it('pm2_reload_process reloads a running process', async () => {
+    const name = 'mcp-reload-test';
+    await startEcho(name);
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    const reloadRes = await callToolWithTimeout('pm2_reload_process', { process: name });
+    should(reloadRes.isError).not.equal(true);
+    should(reloadRes.structuredContent.action).eql('reload');
+    should(reloadRes.structuredContent.process).eql(name);
+    should(reloadRes.structuredContent.processes).be.an.Array();
+
+    await callToolWithTimeout('pm2_delete_process', { process: name });
+  });
+
+  it('pm2_flush_logs flushes log files for a process', async () => {
+    const name = 'mcp-flush-test';
+    await startEcho(name);
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    const flushRes = await callToolWithTimeout('pm2_flush_logs', { process: name });
+    should(flushRes.isError).not.equal(true);
+    should(flushRes.structuredContent.action).eql('flush');
+    should(flushRes.structuredContent.process).eql(name);
+
+    await callToolWithTimeout('pm2_delete_process', { process: name });
+  });
+
+  it('pm2_reload_logs rotates and reopens log files', async () => {
+    const name = 'mcp-reloadlogs-test';
+    await startEcho(name);
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    const reloadLogsRes = await callToolWithTimeout('pm2_reload_logs');
+    should(reloadLogsRes.isError).not.equal(true);
+    should(reloadLogsRes.structuredContent.action).eql('reloadLogs');
+
+    await callToolWithTimeout('pm2_delete_process', { process: name });
+  });
+
+  it('pm2_dump persists the current process list', async () => {
+    const name = 'mcp-dump-test';
+    await startEcho(name);
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    const dumpRes = await callToolWithTimeout('pm2_dump');
+    should(dumpRes.isError).not.equal(true);
+    should(dumpRes.structuredContent.action).eql('dump');
+
+    await callToolWithTimeout('pm2_delete_process', { process: name });
+  });
 });
