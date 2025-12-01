@@ -38,7 +38,7 @@ PM2 is constantly assailed by [more than 1800 tests](https://github.com/Unitech/
 
 Official website: [https://pm2.keymetrics.io/](https://pm2.keymetrics.io/)
 
-Works on Linux (stable) & macOS (stable) & Windows (stable). All Node.js versions are supported starting Node.js 12.X and Bun since v1
+Works on Linux (stable) & macOS (stable) & Windows (stable). All Node.js versions are supported starting Node.js 22.0.0 and Bun since v1
 
 
 ## Installing PM2
@@ -221,6 +221,15 @@ $ pm2 update
 ```
 
 *PM2 updates are seamless*
+
+## MCP server
+
+PM2 now bundles an [MCP](https://modelcontextprotocol.io/specification/2025-11-25) stdio server that exposes the core process controls (list, describe, start, restart, reload, stop, delete, log flush/rotation, dump, daemon kill) plus process resources.
+
+- Run it with `pm2-mcp` (or `npm run mcp`) and point your MCP client at that stdio command.
+- Quick Codex registration: `codex mcp add pm2-mcp -- pm2-mcp` then `codex mcp list` to confirm.
+- Tools: `pm2_list_processes`, `pm2_describe_process`, `pm2_start_process`, `pm2_restart_process`, `pm2_reload_process`, `pm2_stop_process`, `pm2_delete_process`, `pm2_flush_logs`, `pm2_reload_logs`, `pm2_dump`, `pm2_tail_logs`, `pm2_kill_daemon`.
+- Resources: `pm2://processes` (list) and `pm2://process/{id}` (detail). Both return JSON payloads.
 
 ## PM2+ Monitoring
 

@@ -100,5 +100,8 @@ runUnitTest $D/bus.spec.mocha.js
 runUnitTest $D/bus.fork.spec.mocha.js
 runUnitTest $D/utility.mocha.js
 
+D=test/mcp
+runUnitTest $D/server.mocha.js
+
 echo "============== unit test finished =============="
 cat unit_time
