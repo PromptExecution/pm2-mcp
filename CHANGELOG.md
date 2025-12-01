@@ -1,4 +1,10 @@
 
+## 6.0.14
+
+- Fixed version of @pm2/pm2-version-check #6055
+- CVE-2025-64718 Update js-yaml
+- replace fs.R_OK with fs.constants.T_OK #6012 #6019
+
 ## 6.0.13
 
 - Fix blessed package import
