@@ -227,7 +227,13 @@ $ pm2 update
 PM2 now bundles an [MCP](https://modelcontextprotocol.io/specification/2025-11-25) stdio server that exposes the core process controls (list, describe, start, restart, reload, stop, delete, log flush/rotation, dump, daemon kill) plus process resources.
 
 - Run it with `pm2-mcp` (or `npm run mcp`) and point your MCP client at that stdio command.
+- Prefer the Streamable HTTP transport for long-lived usage: `pm2-mcp --transport http --port 8849 --host 0.0.0.0 --path /mcp` (env aliases: `PM2_MCP_TRANSPORT`, `PM2_MCP_PORT`, `PM2_MCP_HOST`, `PM2_MCP_PATH`).
 - Quick Codex registration: `codex mcp add pm2-mcp -- pm2-mcp` then `codex mcp list` to confirm.
+- By default the server starts in PM2 no-daemon mode for compatibility with sandboxed MCP clients. Set `PM2_MCP_NO_DAEMON=false` to connect to an existing PM2 daemon instead.
+- PM2 CLI noise is silenced automatically to keep stdio clean for the MCP handshake; set `PM2_SILENT=false` only if you need PM2 console output.
+- Run the server under PM2 itself with `pm2-mcp --pm2 --pm2-name mcp-server --transport http --port 8849` to keep it alive across restarts.
+- Logging: set `DEBUG=pm2-mcp*` to see lifecycle/activity logs (transport selection, PM2 connects, tool calls).
+- Faster setup with just: `just register-codex-stdio` to register the stdio server with Codex; `just run-mcp-http` (optional) to run HTTP transport locally and `just register-codex-http` to register that endpoint.
 - Tools: `pm2_list_processes`, `pm2_describe_process`, `pm2_start_process`, `pm2_restart_process`, `pm2_reload_process`, `pm2_stop_process`, `pm2_delete_process`, `pm2_flush_logs`, `pm2_reload_logs`, `pm2_dump`, `pm2_tail_logs`, `pm2_kill_daemon`.
 - Resources: `pm2://processes` (list) and `pm2://process/{id}` (detail). Both return JSON payloads.
 
