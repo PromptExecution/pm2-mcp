@@ -1,0 +1,50 @@
+distributable:
+  url: https://github.com/PromptExecution/pm2-mcp/archive/refs/tags/v{{version}}.tar.gz
+  strip-components: 1
+
+versions:
+  github: PromptExecution/pm2-mcp/tags
+  strip: /^v/
+
+description: PM2 with MCP (Model Context Protocol) server support
+homepage: https://github.com/PromptExecution/pm2-mcp
+license: AGPL-3.0
+
+dependencies:
+  nodejs.org: '>=22'
+
+build:
+  dependencies:
+    npmjs.com: '*'
+  script: |
+    # Install dependencies
+    npm install --omit=dev --legacy-peer-deps
+
+    # Create installation directory structure
+    mkdir -p {{prefix}}/lib/pm2-mcp
+    mkdir -p {{prefix}}/bin
+
+    # Copy everything to lib directory
+    cp -R . {{prefix}}/lib/pm2-mcp/
+
+    # Create wrapper scripts for binaries
+    for bin in pm2 pm2-dev pm2-docker pm2-runtime pm2-mcp; do
+      cat > {{prefix}}/bin/$bin <<'WRAPPER'
+#!/usr/bin/env bash
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export NODE_PATH="$DIR/lib/pm2-mcp/node_modules:$NODE_PATH"
+exec node "$DIR/lib/pm2-mcp/bin/$(basename "$0")" "$@"
+WRAPPER
+      chmod +x {{prefix}}/bin/$bin
+    done
+
+provides:
+  - bin/pm2
+  - bin/pm2-dev
+  - bin/pm2-docker
+  - bin/pm2-runtime
+  - bin/pm2-mcp
+
+test: |
+  pm2-mcp --help
+  pm2 --version | grep {{version}}
