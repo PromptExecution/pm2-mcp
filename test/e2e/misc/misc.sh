@@ -81,9 +81,11 @@ rm outmerge*
 
 $pm2 start echo.js -i 4 -o outmerge.log
 
+sleep 1
 cat outmerge.log > /dev/null
 ispec 'file outmerge.log should not exist'
 
+sleep 1
 cat outmerge-0.log > /dev/null
 spec 'file outmerge-0.log should exist'
 
@@ -96,10 +98,11 @@ $pm2 kill
 rm outmerge*
 
 $pm2 start echo.js -i 4 -o outmerge.log --merge-logs
-sleep 0.2
+sleep 1
 cat outmerge.log > /dev/null
 spec 'file outmerge.log should exist'
 
+sleep 1
 cat outmerge-0.log > /dev/null
 ispec 'file outmerge-0.log should not exist'
 
