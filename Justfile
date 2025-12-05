@@ -51,12 +51,3 @@ debug-mcp:
     set -euo pipefail
     PM2_MCP_DEBUG=true DEBUG=pm2-mcp* pm2-mcp
 
-# Test sandbox detection
-test-sandbox:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    echo "Testing normal environment:"
-    node -e "const {detectSandbox} = require('./lib/mcp/server.js'); console.log(detectSandbox ? 'Available' : 'Not exported');" || echo "Normal detection test"
-    echo ""
-    echo "Testing with CLAUDE_CODE_SANDBOX=true:"
-    CLAUDE_CODE_SANDBOX=true PM2_MCP_DEBUG=true timeout 2 pm2-mcp 2>&1 | grep -i sandbox || echo "Check logs for sandbox detection"
