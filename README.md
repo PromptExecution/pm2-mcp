@@ -241,6 +241,8 @@ claude mcp get pm2-mcp
 ```
 
 #### Codex (stdio)
+[Codex](https://developers.openai.com/codex/mcp) is OpenAI's CLI tool for AI-assisted development with MCP support.
+
 ```bash
 # Add pm2-mcp to Codex
 codex mcp add pm2-mcp -- pm2-mcp
