@@ -38,7 +38,7 @@ PM2 is constantly assailed by [more than 1800 tests](https://github.com/Unitech/
 
 Official website: [https://pm2.keymetrics.io/](https://pm2.keymetrics.io/)
 
-Works on Linux (stable) & macOS (stable) & Windows (stable). All Node.js versions are supported starting Node.js 22.0.0 and Bun since v1
+Works on Linux (stable) & macOS (stable) & Windows (stable). Node.js 22.0.0 and later are supported, and Bun since v1
 
 
 ## Installing PM2
@@ -241,6 +241,8 @@ claude mcp get pm2-mcp
 ```
 
 #### Codex (stdio)
+[Codex](https://developers.openai.com/codex/mcp) is OpenAI's CLI tool for AI-assisted development with MCP support.
+
 ```bash
 # Add pm2-mcp to Codex
 codex mcp add pm2-mcp -- pm2-mcp
